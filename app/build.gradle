@@ -1,0 +1,77 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+def keystorePropertiesFile = rootProject.file("credentials.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion "29.0.3"
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        applicationId "com.abhi.imagesearch"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+        buildConfigField("String", "FLICKR_API_KEY", keystoreProperties['FLICKR_API_KEY'])
+
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.0'
+    implementation deps.androidx.constraintlayout
+    implementation deps.androidx.recyclerview
+
+    implementation deps.dagger.core
+    implementation deps.dagger.lifecycle
+    kapt deps.dagger.compiler
+    kapt deps.dagger.hiltcompiler
+
+    // lifecycle
+    implementation deps.androidx.livedata
+    implementation deps.androidx.viewmodel
+
+    // coroutines
+    implementation deps.coroutines.android
+
+    // retrofit
+    implementation deps.network.retrofit
+    implementation deps.network.gson
+    implementation deps.network.okhttp
+
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
