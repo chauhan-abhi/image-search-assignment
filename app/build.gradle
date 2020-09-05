@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-android-extensions'
+
 }
 
 def keystorePropertiesFile = rootProject.file("credentials.properties")
@@ -16,6 +18,9 @@ android {
 
     dataBinding {
         enabled = true
+    }
+    buildFeatures {
+        viewBinding = true
     }
 
     defaultConfig {
@@ -62,6 +67,8 @@ dependencies {
     // lifecycle
     implementation deps.androidx.livedata
     implementation deps.androidx.viewmodel
+    implementation deps.androidx.coreKtx
+    implementation deps.androidx.fragmentKtx
 
     // coroutines
     implementation deps.coroutines.android
@@ -70,6 +77,14 @@ dependencies {
     implementation deps.network.retrofit
     implementation deps.network.gson
     implementation deps.network.okhttp
+    implementation deps.network.stetho
+
+    implementation deps.room.room
+    kapt deps.room.compiler
+    implementation deps.room.ktx
+
+    implementation deps.glide.glide
+    annotationProcessor deps.glide.compiler
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
