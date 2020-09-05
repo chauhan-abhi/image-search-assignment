@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parentLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -19,6 +19,26 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/image_listing_item" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/parentLayout"
+            app:layout_constraintBottom_toBottomOf="@+id/parentLayout"/>
+
+        <TextView
+            android:id="@+id/searchHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:text="Search any topic for images"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/parentLayout"
+            app:layout_constraintBottom_toBottomOf="@+id/parentLayout"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

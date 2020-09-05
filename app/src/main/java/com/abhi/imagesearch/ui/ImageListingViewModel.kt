@@ -14,7 +14,7 @@ class ImageListingViewModel @ViewModelInject constructor(
     private val useCaseInteractor: ImageSearchUseCaseInteractor
 ) : ViewModel() {
 
-    var images: MutableLiveData<List<PhotoResponse>> = MutableLiveData()
+    var images: MutableLiveData<ViewState<List<PhotoResponse>>> = MutableLiveData()
 
 
     fun getPhotosLiveData() = images
@@ -30,7 +30,4 @@ class ImageListingViewModel @ViewModelInject constructor(
         }
     }
 
-    fun resetSearch() {
-        images.postValue(mutableListOf())
-    }
 }

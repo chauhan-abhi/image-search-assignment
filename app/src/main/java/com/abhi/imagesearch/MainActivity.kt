@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuCompat
-import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abhi.imagesearch.ui.ImageListingAdapter
 import com.abhi.imagesearch.ui.ImageListingViewModel
+import com.abhi.imagesearch.ui.ViewState
+import com.abhi.imagesearch.utils.isNetworkStatusAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -34,12 +36,23 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             GridLayoutManager(this, mColumnCount, RecyclerView.VERTICAL, false)
         rvImageListing.layoutManager = mLayoutManager
         rvImageListing.adapter = imageListAdapter
-        imageListingViewModel.images.observe(this, { imageList ->
-            if (!imageList.isNullOrEmpty()) {
-                imageListAdapter.updateList(imageList)
+        imageListingViewModel.images.observe(this, { viewState ->
+            when(viewState) {
+                is ViewState.Loading -> progressBar.visibility = View.VISIBLE
+                is ViewState.Success -> {
+                    searchHint.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    if (!viewState.data.isNullOrEmpty()) {
+                        imageListAdapter.updateList(viewState.data)
+                    }
+                }
+                is ViewState.Error -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(this, viewState.message, Toast.LENGTH_SHORT).show()
+                }
             }
         })
-        imageListingViewModel.searchImages("dog")
+        //imageListingViewModel.searchImages("dog")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -74,7 +87,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(query: String): Boolean {
-        imageListingViewModel.searchImages(query)
+        if (isNetworkStatusAvailable(this))
+            imageListingViewModel.searchImages(query)
+        else    Toast.makeText(this, "No network", Toast.LENGTH_SHORT).show()
         return false
     }
 

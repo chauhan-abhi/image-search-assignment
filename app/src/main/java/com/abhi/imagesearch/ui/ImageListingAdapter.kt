@@ -1,16 +1,14 @@
 package com.abhi.imagesearch.ui
 
 import android.content.Context
-import android.graphics.Point
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.abhi.imagesearch.R
 import com.abhi.imagesearch.data.models.PhotoResponse
 import com.abhi.imagesearch.databinding.ImageListingItemBinding
-import com.abhi.imagesearch.loadImageUrl
+import com.abhi.imagesearch.utils.loadImageUrl
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
